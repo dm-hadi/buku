@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dashboard Keuangan & Penjualan</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2830/2830284.png">
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --primary-light: #f0fdfa;
+      --emerald: #059669;
+      --rose: #e11d48;
+      --rose-light: #fff1f2;
+      --amber: #d97706;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding-bottom: 92px;
+      line-height: 1.4;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-inner {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-title h1 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .header-title p {
+      font-size: 11px;
+      color: #ccfbf1;
+      margin-top: 2px;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .date-filter {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .date-filter::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
+
+    .btn-refresh {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .btn-refresh:active {
+      transform: scale(0.94);
+    }
+
+    /* Main Layout */
+    main {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Period Toggle (Harian / Bulanan) */
+    .period-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: 12px;
+    }
+
+    .period-btn {
+      border: none;
+      background: transparent;
+      padding: 8px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .period-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Hero Profit Card */
+    .hero-card {
+      background: linear-gradient(135deg, #0f766e 0%, #065f46 100%);
+      color: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 20px -5px rgba(15, 118, 110, 0.35);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .hero-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #a7f3d0;
+      font-weight: 600;
+    }
+
+    .hero-amount {
+      font-size: 28px;
+      font-weight: 800;
+      margin-top: 4px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero-formula {
+      font-size: 11px;
+      color: #ccfbf1;
+      margin-top: 4px;
+      opacity: 0.9;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .hero-sub-label {
+      font-size: 11px;
+      color: #ccfbf1;
+    }
+
+    .hero-sub-val {
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .text-profit-light { color: #6ee7b7; }
+    .text-expense-light { color: #fecdd3; }
+
+    /* Cards & Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stat-val {
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 4px;
+      color: var(--text-main);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .badge-count {
+      font-size: 11px;
+      background: var(--bg);
+      color: var(--text-muted);
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    /* Channel Breakdown */
+    .channel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .ch-item {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ch-item-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .ch-item-sub {
+      font-size: 10px;
+      opacity: 0.85;
+    }
+
+    .ch-Offline { background: #f8fafc; color: #334155; }
+    .ch-Shopee { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
+    .ch-TikTok { background: #18181b; color: #ffffff; border-color: #18181b; }
+    .ch-Lazada { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+    .ch-Tokopedia { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+    .ch-Blibli { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+
+    /* Activity List */
+    .activity-item {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .activity-item:first-child { padding-top: 0; }
+
+    .act-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag-ch {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .tag-exp {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--rose-light);
+      color: var(--rose);
+    }
+
+    .act-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .act-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .act-profit {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--emerald);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .act-loss {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--rose);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 22px 0;
+    }
+
+    /* Forms & Order Builder */
+    .form-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--text-main);
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 11px 13px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .form-control:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .channel-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .ch-btn {
+      padding: 10px 6px;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      color: #475569;
+      cursor: pointer;
+    }
+
+    .ch-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* Box Tambah Item */
+    .item-builder-box {
+      background: #f8fafc;
+      border: 1.5px dashed #cbd5e1;
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .item-builder-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .row-qty-modal {
+      display: grid;
+      grid-template-columns: 75px 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .btn-add-item {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      background: #0f172a;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-add-item:active {
+      transform: scale(0.98);
+    }
+
+    /* Keranjang Barang Pesanan */
+    .cart-box {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 14px;
+      background: #ffffff;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 12px;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    .cart-item-info strong {
+      display: block;
+      color: var(--text-main);
+    }
+
+    .cart-item-info span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .cart-item-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-del-item {
+      background: var(--rose-light);
+      color: var(--rose);
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      margin-top: 4px;
+      border-top: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    /* Kalkulasi Akhir Pesanan */
+    .calc-summary {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .calc-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #065f46;
+      margin-bottom: 5px;
+    }
+
+    .calc-final {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      margin-top: 6px;
+      border-top: 1px dashed #6ee7b7;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--emerald);
+    }
+
+    .calc-final.minus {
+      color: var(--rose);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(15, 118, 110, 0.25);
+    }
+
+    .btn-submit.rose {
+      background: var(--rose);
+      box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+    }
+
+    /* Bottom Navigation */
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      z-index: 30;
+    }
+
+    .nav-inner {
+      max-width: 500px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      height: 64px;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+
+    .nav-btn.active {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .nav-btn svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Loader & Toast */
+    .loader {
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .toast {
+      position: fixed;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 30px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s;
+      z-index: 50;
+      white-space: nowrap;
+    }
+
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="header-title">
+        <h1>Keuangan Toko</h1>
+        <p id="subtitlePeriod">Rekap Harian & Bulanan</p>
+      </div>
+      <div class="header-controls">
+        <input type="date" id="filterDate" class="date-filter">
+        <button onclick="loadDashboard()" class="btn-refresh" title="Refresh Data">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: DASHBOARD -->
+    <section id="view-dashboard" style="display: flex; flex-direction: column; gap: 14px;">
+
+      <!-- Switcher Harian / Bulanan -->
+      <div class="period-switch">
+        <button id="btnModeDaily" class="period-btn active" onclick="setDashboardMode('daily')">Ringkasan Harian</button>
+        <button id="btnModeMonthly" class="period-btn" onclick="setDashboardMode('monthly')">Ringkasan Bulanan</button>
+      </div>
+
+      <!-- Hero Card: Total Profit - Pengeluaran = Laba Bersih -->
+      <div class="hero-card">
+        <div class="hero-top">
+          <div>
+            <div id="heroLabel" class="hero-label">Laba Bersih Harian</div>
+            <div id="valLabaBersih" class="hero-amount">Rp 0</div>
+            <div class="hero-formula">Total Profit − Total Pengeluaran</div>
+          </div>
+          <div id="loadingIndicator" class="loader hidden"></div>
+        </div>
+        <div class="hero-grid">
+          <div>
+            <div class="hero-sub-label">Total Profit Pesanan</div>
+            <div id="valTotalProfit" class="hero-sub-val text-profit-light">+ Rp 0</div>
+          </div>
+          <div>
+            <div class="hero-sub-label">Total Pengeluaran</div>
+            <div id="valPengeluaran" class="hero-sub-val text-expense-light">- Rp 0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Penghasilan Akhir & Total Modal -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="stat-label">Penghasilan Akhir (Omzet)</div>
+          <div id="valOmzet" class="stat-val">Rp 0</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Total Modal Barang</div>
+          <div id="valModal" class="stat-val">Rp 0</div>
+        </div>
+      </div>
+
+      <!-- Performa per Channel -->
+      <div class="card">
+        <div class="section-header">
+          <div id="channelSectionTitle" class="section-title">Profit & Omzet per Channel (Harian)</div>
+        </div>
+        <div id="channelList" class="channel-grid">
+          <!-- Diisi via JS -->
+        </div>
+      </div>
+
+      <!-- Riwayat Pesanan & Pengeluaran Tanggal Dipilih -->
+      <div class="card">
+        <div class="section-header">
+          <div class="section-title">Riwayat Tanggal Dipilih</div>
+          <span id="countTrx" class="badge-count">0 data</span>
+        </div>
+        <div id="activityList">
+          <div class="empty-state">Memuat data dari Google Sheets...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: INPUT PENJUALAN PER PESANAN -->
+    <section id="view-penjualan" class="hidden">
+      <div class="card">
+        <div class="form-title">Input Pesanan Baru</div>
+
+        <div class="form-group">
+          <label class="form-label">Tanggal Pesanan</label>
+          <input type="date" id="trxTanggal" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Channel / Marketplace</label>
+          <div class="channel-selector">
+            <button type="button" data-val="Shopee" class="ch-btn active">Shopee</button>
+            <button type="button" data-val="TikTok" class="ch-btn">TikTok</button>
+            <button type="button" data-val="Offline" class="ch-btn">Offline</button>
+            <button type="button" data-val="Lazada" class="ch-btn">Lazada</button>
+            <button type="button" data-val="Tokopedia" class="ch-btn">Tokopedia</button>
+            <button type="button" data-val="Blibli" class="ch-btn">Blibli</button>
+          </div>
+          <input type="hidden" id="trxChannel" value="Shopee">
+        </div>
+
+        <!-- Step 1: Input Barang ke Dalam Pesanan -->
+        <div class="item-builder-box">
+          <div class="item-builder-title">+ Tambah Barang dalam Pesanan Ini</div>
+          <input type="text" id="itemNama" placeholder="Nama barang (contoh: Beras 5kg)" class="form-control">
+          <div class="row-qty-modal">
+            <input type="number" id="itemQty" value="1" min="1" placeholder="Qty" class="form-control">
+            <input type="number" id="itemModal" placeholder="Modal satuan (Rp)" class="form-control">
+          </div>
+          <button type="button" onclick="tambahBarangKePesanan()" class="btn-add-item">
+            + Masukkan ke Daftar Barang
+          </button>
+        </div>
+
+        <!-- Daftar Barang yang Sudah Diinput -->
+        <div class="cart-box">
+          <div class="cart-header">
+            <span>Daftar Barang Pesanan</span>
+            <span id="cartCount">0 barang</span>
+          </div>
+          <div id="cartList">
+            <div style="text-align:center; color:#94a3b8; font-size:11.5px; padding:14px 0;">
+              Belum ada barang. Tambahkan barang 1, barang 2, dst di atas.
+            </div>
+          </div>
+          <div class="cart-total-row">
+            <span>Total Modal Barang:</span>
+            <span id="cartTotalModal" style="color:#0f172a;">Rp 0</span>
+          </div>
+        </div>
+
+        <!-- Step 2: Input Penghasilan Akhir -->
+        <div class="form-group">
+          <label class="form-label">Penghasilan Akhir / Dana Masuk (Rp)</label>
+          <input type="number" id="trxPenghasilanAkhir" placeholder="Masukkan penghasilan bersih dari marketplace" oninput="hitungProfitPesanan()" class="form-control" style="font-weight:700; font-size:15px;">
+        </div>
+
+        <!-- Ringkasan Kalkulasi Pesanan -->
+        <div class="calc-summary">
+          <div class="calc-line">
+            <span>Penghasilan Akhir:</span>
+            <span id="sumPenghasilan">Rp 0</span>
+          </div>
+          <div class="calc-line">
+            <span>Total Modal (Barang 1 + 2 + dst):</span>
+            <span id="sumModal">- Rp 0</span>
+          </div>
+          <div id="calcFinalRow" class="calc-final">
+            <span>Profit Pesanan Ini:</span>
+            <span id="sumProfit">Rp 0</span>
+          </div>
+        </div>
+
+        <button type="button" id="btnSubmitTrx" onclick="simpanPesanan()" class="btn-submit">
+          Simpan Penjualan
+        </button>
+      </div>
+    </section>
+
+    <!-- TAB 3: INPUT PENGELUARAN -->
+    <section id="view-pengeluaran" class="hidden">
+      <div class="card">
+        <div class="form-title">Catat Pengeluaran Operasional</div>
+        <form id="formPengeluaran">
+          <div class="form-group">
+            <label class="form-label">Tanggal Pengeluaran</label>
+            <input type="date" id="expTanggal" required class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Kategori</label>
+            <select id="expKategori" class="form-control">
+              <option value="Packing & Lakban">Packing, Bubble Wrap & Lakban</option>
+              <option value="Iklan / Ads">Iklan Marketplace / Ads</option>
+              <option value="Bensin & Ongkir">Bensin / Ongkir Kulakan</option>
+              <option value="Operasional Harian">Operasional (Makan/Listrik/Kuota)</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Keterangan Detail</label>
+            <input type="text" id="expKeterangan" placeholder="Contoh: Beli lakban 6 roll & kertas resi" required class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Nominal Pengeluaran (Rp)</label>
+            <input type="number" id="expNominal" placeholder="0" required class="form-control" style="font-weight:700; color:#e11d48;">
+          </div>
+
+          <button type="submit" id="btnSubmitExp" class="btn-submit rose">Simpan Pengeluaran</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">Tersimpan!</div>
+
+  <!-- Bottom Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+        </svg>
+        Dashboard
+      </button>
+      <button onclick="switchTab('penjualan')" id="nav-penjualan" class="nav-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        Jual Barang
+      </button>
+      <button onclick="switchTab('pengeluaran')" id="nav-pengeluaran" class="nav-btn">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Pengeluaran
+      </button>
+    </div>
+  </nav>
+
+  <script>
+    // GANTI DENGAN URL WEB APP APPS SCRIPT ANDA
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzAdUxNAE9-YHHNQXycV4R95jtFnVtk1BYxqSeD7fnmF7xQX_HLHz4UBunfrscxMdF1/exec';
+
+    let dashboardData = null;
+    let currentMode = 'daily'; // 'daily' atau 'monthly'
+    let orderItems = [];
+
+    const getTodayWIB = () => {
+      const now = new Date();
+      const offset = now.getTimezoneOffset() * 60000;
+      return new Date(now.getTime() - offset).toISOString().split('T')[0];
+    };
+
+    const today = getTodayWIB();
+    document.getElementById('filterDate').value = today;
+    document.getElementById('trxTanggal').value = today;
+    document.getElementById('expTanggal').value = today;
+
+    const formatRp = (num) => 'Rp ' + Number(num || 0).toLocaleString('id-ID');
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    function switchTab(tab) {
+      ['dashboard', 'penjualan', 'pengeluaran'].forEach(t => {
+        document.getElementById('view-' + t).classList.add('hidden');
+        document.getElementById('nav-' + t).classList.remove('active');
+      });
+      document.getElementById('view-' + tab).classList.remove('hidden');
+      document.getElementById('nav-' + tab).classList.add('active');
+    }
+
+    // Pilih Channel
+    document.querySelectorAll('.ch-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.ch-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('trxChannel').value = btn.dataset.val;
+      });
+    });
+
+    // ==========================================
+    // LOGIKA KERANJANG BARANG PER PESANAN
+    // ==========================================
+    function tambahBarangKePesanan() {
+      const namaEl = document.getElementById('itemNama');
+      const qtyEl = document.getElementById('itemQty');
+      const modalEl = document.getElementById('itemModal');
+
+      const nama = namaEl.value.trim();
+      const qty = Number(qtyEl.value) || 1;
+      const modalSatuan = Number(modalEl.value);
+
+      if (!nama) {
+        showToast('Isi nama barang terlebih dahulu!');
+        namaEl.focus();
+        return;
+      }
+      if (isNaN(modalSatuan) || modalEl.value === '') {
+        showToast('Isi modal satuan barang!');
+        modalEl.focus();
+        return;
+      }
+
+      orderItems.push({
+        nama: nama,
+        qty: qty,
+        modalSatuan: modalSatuan,
+        subtotalModal: qty * modalSatuan
+      });
+
+      namaEl.value = '';
+      qtyEl.value = '1';
+      modalEl.value = '';
+      namaEl.focus();
+
+      renderOrderCart();
+      hitungProfitPesanan();
+    }
+
+    function hapusBarangPesanan(index) {
+      orderItems.splice(index, 1);
+      renderOrderCart();
+      hitungProfitPesanan();
+    }
+
+    function renderOrderCart() {
+      const listEl = document.getElementById('cartList');
+      const countEl = document.getElementById('cartCount');
+      const totalModalEl = document.getElementById('cartTotalModal');
+
+      countEl.textContent = `${orderItems.length} barang`;
+
+      if (orderItems.length === 0) {
+        listEl.innerHTML = `
+          <div style="text-align:center; color:#94a3b8; font-size:11.5px; padding:14px 0;">
+            Belum ada barang. Tambahkan barang 1, barang 2, dst di atas.
+          </div>
+        `;
+        totalModalEl.textContent = 'Rp 0';
+        return;
+      }
+
+      let totalModal = 0;
+      listEl.innerHTML = '';
+
+      orderItems.forEach((item, idx) => {
+        totalModal += item.subtotalModal;
+        listEl.innerHTML += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <strong>${idx + 1}. ${item.nama}</strong>
+              <span>${item.qty}x @ ${formatRp(item.modalSatuan)}</span>
+            </div>
+            <div class="cart-item-right">
+              <span style="font-weight:700;">${formatRp(item.subtotalModal)}</span>
+              <button type="button" class="btn-del-item" onclick="hapusBarangPesanan(${idx})">×</button>
+            </div>
+          </div>
+        `;
+      });
+
+      totalModalEl.textContent = formatRp(totalModal);
+    }
+
+    function getTotalModalOrder() {
+      return orderItems.reduce((sum, item) => sum + item.subtotalModal, 0);
+    }
+
+    function hitungProfitPesanan() {
+      const penghasilan = Number(document.getElementById('trxPenghasilanAkhir').value) || 0;
+      const totalModal = getTotalModalOrder();
+      const profit = penghasilan - totalModal;
+
+      document.getElementById('sumPenghasilan').textContent = formatRp(penghasilan);
+      document.getElementById('sumModal').textContent = '- ' + formatRp(totalModal);
+      document.getElementById('sumProfit').textContent = formatRp(profit);
+
+      const finalRow = document.getElementById('calcFinalRow');
+      if (profit < 0) {
+        finalRow.classList.add('minus');
+      } else {
+        finalRow.classList.remove('minus');
+      }
+    }
+
+    async function simpanPesanan() {
+      if (API_URL.includes('URL_WEB_APP')) {
+        showToast('Masukkan URL Apps Script terlebih dahulu!');
+        return;
+      }
+
+      // Jika user langsung mengisi kolom barang tapi lupa klik tombol "+ Masukkan ke Daftar Barang"
+      const draftNama = document.getElementById('itemNama').value.trim();
+      const draftModal = document.getElementById('itemModal').value;
+      if (orderItems.length === 0 && draftNama && draftModal !== '') {
+        tambahBarangKePesanan();
+      }
+
+      if (orderItems.length === 0) {
+        showToast('Tambahkan minimal 1 barang ke daftar pesanan!');
+        return;
+      }
+
+      const penghasilanVal = document.getElementById('trxPenghasilanAkhir').value;
+      if (penghasilanVal === '') {
+        showToast('Masukkan Penghasilan Akhir pesanan!');
+        document.getElementById('trxPenghasilanAkhir').focus();
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitTrx');
+      btn.disabled = true;
+      btn.textContent = 'Menyimpan Pesanan...';
+
+      const payload = {
+        type: 'transaksi',
+        tanggal: document.getElementById('trxTanggal').value,
+        channel: document.getElementById('trxChannel').value,
+        items: orderItems,
+        penghasilanAkhir: Number(penghasilanVal)
+      };
+
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        showToast('Pesanan berhasil disimpan!');
+        orderItems = [];
+        renderOrderCart();
+        document.getElementById('trxPenghasilanAkhir').value = '';
+        hitungProfitPesanan();
+        switchTab('dashboard');
+        setTimeout(loadDashboard, 1300);
+      } catch (err) {
+        showToast('Gagal menyimpan pesanan');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan Penjualan';
+      }
+    }
+
+    // ==========================================
+    // DASHBOARD HARIAN & BULANAN
+    // ==========================================
+    function setDashboardMode(mode) {
+      currentMode = mode;
+      document.getElementById('btnModeDaily').classList.toggle('active', mode === 'daily');
+      document.getElementById('btnModeMonthly').classList.toggle('active', mode === 'monthly');
+      renderDashboardSummary();
+    }
+
+    function renderDashboardSummary() {
+      if (!dashboardData) return;
+
+      const stats = currentMode === 'daily' ? dashboardData.daily : dashboardData.monthly;
+      const periodLabel = currentMode === 'daily'
+        ? `Harian (${dashboardData.date})`
+        : `Bulanan (${dashboardData.month})`;
+
+      document.getElementById('heroLabel').textContent = `Laba Bersih ${periodLabel}`;
+      document.getElementById('channelSectionTitle').textContent = `Profit & Omzet per Channel (${currentMode === 'daily' ? 'Harian' : 'Bulanan'})`;
+
+      document.getElementById('valLabaBersih').textContent = formatRp(stats.labaBersih);
+      document.getElementById('valTotalProfit').textContent = '+ ' + formatRp(stats.totalProfit);
+      document.getElementById('valPengeluaran').textContent = '- ' + formatRp(stats.totalPengeluaran);
+      document.getElementById('valOmzet').textContent = formatRp(stats.penghasilanAkhir);
+      document.getElementById('valModal').textContent = formatRp(stats.totalModal);
+
+      // Render Channel Breakdown
+      const chContainer = document.getElementById('channelList');
+      chContainer.innerHTML = '';
+      Object.entries(stats.channelBreakdown).forEach(([ch, val]) => {
+        chContainer.innerHTML += `
+          <div class="ch-item ch-${ch}">
+            <div class="ch-item-top">
+              <span>${ch}</span>
+              <span>+${formatRp(val.profit)}</span>
+            </div>
+            <div class="ch-item-sub">Omzet: ${formatRp(val.omzet)}</div>
+          </div>
+        `;
+      });
+    }
+
+    async function loadDashboard() {
+      if (API_URL.includes('URL_WEB_APP')) {
+        showToast('Masukkan URL Apps Script terlebih dahulu!');
+        return;
+      }
+
+      const date = document.getElementById('filterDate').value;
+      document.getElementById('loadingIndicator').classList.remove('hidden');
+
+      try {
+        const res = await fetch(`${API_URL}?action=getDashboard&date=${date}`, { redirect: 'follow' });
+        const data = await res.json();
+
+        if (data.status === 'success') {
+          dashboardData = data;
+          renderDashboardSummary();
+
+          // Render Riwayat Tanggal Dipilih
+          const actList = document.getElementById('activityList');
+          const totalItems = data.recentTrx.length + data.recentExp.length;
+          document.getElementById('countTrx').textContent = `${totalItems} data`;
+
+          if (totalItems === 0) {
+            actList.innerHTML = '<div class="empty-state">Belum ada transaksi di tanggal ini.</div>';
+          } else {
+            actList.innerHTML = '';
+            data.recentTrx.forEach(t => {
+              actList.innerHTML += `
+                <div class="activity-item">
+                  <div>
+                    <div class="act-title-row">
+                      <span class="tag-ch">${t.Channel}</span>
+                      <span class="act-name">${t['Rincian Barang']}</span>
+                    </div>
+                    <div class="act-meta">Cair: ${formatRp(t['Penghasilan Akhir'])} • Modal: ${formatRp(t['Total Modal'])}</div>
+                  </div>
+                  <div class="act-profit">+${formatRp(t['Profit'])}</div>
+                </div>
+              `;
+            });
+
+            data.recentExp.forEach(e => {
+              actList.innerHTML += `
+                <div class="activity-item">
+                  <div>
+                    <div class="act-title-row">
+                      <span class="tag-exp">Keluar</span>
+                      <span class="act-name">${e.Keterangan}</span>
+                    </div>
+                    <div class="act-meta">${e.Kategori}</div>
+                  </div>
+                  <div class="act-loss">-${formatRp(e.Nominal)}</div>
+                </div>
+              `;
+            });
+          }
+        } else {
+          showToast('Error: ' + (data.message || 'Gagal membaca data'));
+        }
+      } catch (err) {
+        showToast('Gagal memuat dashboard. Cek deployment Apps Script.');
+      } finally {
+        document.getElementById('loadingIndicator').classList.add('hidden');
+      }
+    }
+
+    document.getElementById('filterDate').addEventListener('change', loadDashboard);
+
+    // Submit Pengeluaran
+    document.getElementById('formPengeluaran').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (API_URL.includes('URL_WEB_APP')) {
+        showToast('Masukkan URL Apps Script terlebih dahulu!');
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitExp');
+      btn.disabled = true;
+      btn.textContent = 'Menyimpan...';
+
+      const payload = {
+        type: 'pengeluaran',
+        tanggal: document.getElementById('expTanggal').value,
+        kategori: document.getElementById('expKategori').value,
+        keterangan: document.getElementById('expKeterangan').value,
+        nominal: document.getElementById('expNominal').value
+      };
+
+      try {
+        await fetch(API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        showToast('Pengeluaran berhasil dicatat!');
+        document.getElementById('expKeterangan').value = '';
+        document.getElementById('expNominal').value = '';
+        switchTab('dashboard');
+        setTimeout(loadDashboard, 1300);
+      } catch (err) {
+        showToast('Terjadi kesalahan koneksi');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan Pengeluaran';
+      }
+    });
+
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      navigator.serviceWorker.register('./sw.js').catch(() => {});
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>
