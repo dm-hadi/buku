@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Dashboard Keuangan & Penjualan</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f766e">
@@ -22,6 +22,8 @@
       --text-muted: #64748b;
       --border: #e2e8f0;
       --radius: 16px;
+      --sidebar-w: 235px;
+      --bottom-nav-h: 64px;
     }
 
     * {
@@ -31,42 +33,58 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    html, body {
+      width: 100%;
+      min-height: 100dvh;
       background-color: var(--bg);
       color: var(--text-main);
-      padding-bottom: 92px;
-      line-height: 1.4;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.45;
+      overflow-x: hidden;
     }
 
-    /* Header */
+    body {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom) + 16px);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =========================================
+       HEADER (FLUID WIDTH)
+       ========================================= */
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #ffffff;
       position: sticky;
       top: 0;
       z-index: 30;
+      width: 100%;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .header-inner {
-      max-width: 500px;
+      width: 100%;
+      max-width: 1360px;
       margin: 0 auto;
-      padding: 14px 16px;
+      padding: 14px clamp(16px, 3vw, 28px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .header-title h1 {
-      font-size: 17px;
+      font-size: clamp(17px, 2vw, 21px);
       font-weight: 700;
       letter-spacing: -0.3px;
     }
 
     .header-title p {
-      font-size: 11px;
+      font-size: 12px;
       color: #ccfbf1;
       margin-top: 2px;
     }
@@ -78,66 +96,111 @@
     }
 
     .date-filter {
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.16);
       color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.28);
       border-radius: 10px;
-      padding: 6px 10px;
-      font-size: 12px;
+      padding: 7px 12px;
+      font-size: 13px;
       font-family: inherit;
       outline: none;
+      min-height: 38px;
     }
 
     .date-filter::-webkit-calendar-picker-indicator {
       filter: invert(1);
+      cursor: pointer;
     }
 
     .btn-refresh {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.28);
       color: #ffffff;
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn-refresh:hover {
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .btn-refresh:active {
       transform: scale(0.94);
     }
 
-    /* Main Layout */
+    /* =========================================
+       MAIN CONTAINER (FLUID & RESPONSIVE)
+       ========================================= */
     main {
-      max-width: 500px;
+      flex: 1;
+      width: 100%;
+      max-width: 1360px;
       margin: 0 auto;
-      padding: 16px;
+      padding: clamp(16px, 2.5vw, 28px);
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
-    .hidden {
-      display: none !important;
+    /* Install Banner */
+    .install-banner {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 18px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
     }
 
-    /* Period Toggle (Harian / Bulanan) */
+    .install-banner h4 { font-size: 13.5px; font-weight: 700; }
+    .install-banner p { font-size: 11.5px; color: #94a3b8; margin-top: 2px; }
+
+    .btn-install {
+      background: #14b8a6;
+      color: #042f2e;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* =========================================
+       DASHBOARD LAYOUT & CARDS
+       ========================================= */
+    .dashboard-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
     .period-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
       background: #e2e8f0;
       padding: 4px;
       border-radius: 12px;
+      width: 100%;
+      max-width: 420px;
     }
 
     .period-btn {
       border: none;
       background: transparent;
-      padding: 8px;
+      padding: 9px 12px;
       border-radius: 9px;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       color: #475569;
       cursor: pointer;
@@ -150,13 +213,29 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     }
 
+    /* Top Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .sub-metrics-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
     /* Hero Profit Card */
     .hero-card {
       background: linear-gradient(135deg, #0f766e 0%, #065f46 100%);
       color: #ffffff;
       border-radius: 20px;
-      padding: 20px;
+      padding: clamp(18px, 2.5vw, 24px);
       box-shadow: 0 10px 20px -5px rgba(15, 118, 110, 0.35);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .hero-top {
@@ -166,7 +245,7 @@
     }
 
     .hero-label {
-      font-size: 11px;
+      font-size: 11.5px;
       text-transform: uppercase;
       letter-spacing: 0.8px;
       color: #a7f3d0;
@@ -174,14 +253,14 @@
     }
 
     .hero-amount {
-      font-size: 28px;
+      font-size: clamp(26px, 3vw, 34px);
       font-weight: 800;
       margin-top: 4px;
       letter-spacing: -0.5px;
     }
 
     .hero-formula {
-      font-size: 11px;
+      font-size: 11.5px;
       color: #ccfbf1;
       margin-top: 4px;
       opacity: 0.9;
@@ -191,62 +270,67 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-top: 16px;
+      margin-top: 18px;
       padding-top: 14px;
       border-top: 1px solid rgba(255, 255, 255, 0.18);
     }
 
-    .hero-sub-label {
-      font-size: 11px;
-      color: #ccfbf1;
-    }
-
-    .hero-sub-val {
-      font-size: 15px;
-      font-weight: 700;
-      margin-top: 2px;
-    }
-
+    .hero-sub-label { font-size: 11.5px; color: #ccfbf1; }
+    .hero-sub-val { font-size: clamp(14px, 1.6vw, 17px); font-weight: 700; margin-top: 2px; }
     .text-profit-light { color: #6ee7b7; }
     .text-expense-light { color: #fecdd3; }
 
-    /* Cards & Grids */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
+    /* Standard Cards */
     .card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: clamp(16px, 2vw, 22px);
       border: 1px solid var(--border);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
     }
 
+    .stat-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
     .stat-label {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .stat-val {
-      font-size: 15px;
-      font-weight: 700;
-      margin-top: 4px;
+      font-size: clamp(16px, 2vw, 22px);
+      font-weight: 800;
+      margin-top: 6px;
       color: var(--text-main);
+    }
+
+    .stat-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Dashboard Bottom Grid (Channels + Activity) */
+    .dashboard-bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
     }
 
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .section-title {
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 700;
       color: var(--text-main);
     }
@@ -255,7 +339,7 @@
       font-size: 11px;
       background: var(--bg);
       color: var(--text-muted);
-      padding: 3px 9px;
+      padding: 3px 10px;
       border-radius: 20px;
       font-weight: 600;
     }
@@ -263,28 +347,30 @@
     /* Channel Breakdown */
     .channel-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
     }
 
     .ch-item {
-      padding: 10px 12px;
+      padding: 12px;
       border-radius: 12px;
       border: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
     }
 
     .ch-item-top {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
+      align-items: center;
+      font-size: 12.5px;
       font-weight: 700;
+      gap: 6px;
     }
 
     .ch-item-sub {
-      font-size: 10px;
+      font-size: 11px;
       opacity: 0.85;
     }
 
@@ -296,13 +382,18 @@
     .ch-Blibli { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
 
     /* Activity List */
+    .activity-scroll {
+      max-height: 460px;
+      overflow-y: auto;
+    }
+
     .activity-item {
       padding: 12px 0;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 10px;
+      gap: 12px;
     }
 
     .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
@@ -316,37 +407,37 @@
     }
 
     .tag-ch {
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 700;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 6px;
       background: var(--primary-light);
       color: var(--primary);
     }
 
     .tag-exp {
-      font-size: 10px;
+      font-size: 10.5px;
       font-weight: 700;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 6px;
       background: var(--rose-light);
       color: var(--rose);
     }
 
     .act-name {
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--text-main);
     }
 
     .act-meta {
-      font-size: 11px;
+      font-size: 11.5px;
       color: var(--text-muted);
-      margin-top: 3px;
+      margin-top: 4px;
     }
 
     .act-profit {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
       color: var(--emerald);
       text-align: right;
@@ -354,7 +445,7 @@
     }
 
     .act-loss {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
       color: var(--rose);
       text-align: right;
@@ -364,15 +455,30 @@
     .empty-state {
       text-align: center;
       color: var(--text-muted);
-      font-size: 12px;
-      padding: 22px 0;
+      font-size: 12.5px;
+      padding: 28px 0;
     }
 
-    /* Forms & Order Builder */
+    /* =========================================
+       FORMS & ORDER BUILDER (RESPONSIVE SPLIT)
+       ========================================= */
+    .order-split-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .expense-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
     .form-title {
-      font-size: 16px;
+      font-size: 16.5px;
       font-weight: 700;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       color: var(--text-main);
     }
 
@@ -398,6 +504,8 @@
       font-family: inherit;
       color: var(--text-main);
       outline: none;
+      min-height: 44px;
+      transition: border-color 0.2s, background 0.2s;
     }
 
     .form-control:focus {
@@ -414,12 +522,14 @@
     .ch-btn {
       padding: 10px 6px;
       border-radius: 11px;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
       border: 1px solid #cbd5e1;
       background: #f8fafc;
       color: #475569;
       cursor: pointer;
+      min-height: 40px;
+      transition: all 0.15s;
     }
 
     .ch-btn.active {
@@ -428,17 +538,16 @@
       border-color: var(--primary);
     }
 
-    /* Box Tambah Item */
     .item-builder-box {
       background: #f8fafc;
       border: 1.5px dashed #cbd5e1;
       border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 14px;
+      padding: 14px;
+      margin-bottom: 4px;
     }
 
     .item-builder-title {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--primary);
       margin-bottom: 10px;
@@ -446,7 +555,7 @@
 
     .row-qty-modal {
       display: grid;
-      grid-template-columns: 75px 1fr;
+      grid-template-columns: 85px 1fr;
       gap: 8px;
       margin-top: 8px;
     }
@@ -454,26 +563,24 @@
     .btn-add-item {
       width: 100%;
       margin-top: 10px;
-      padding: 10px;
+      padding: 11px;
       background: #0f172a;
       color: #ffffff;
       border: none;
       border-radius: 10px;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       cursor: pointer;
+      min-height: 42px;
     }
 
-    .btn-add-item:active {
-      transform: scale(0.98);
-    }
+    .btn-add-item:active { transform: scale(0.98); }
 
-    /* Keranjang Barang Pesanan */
     .cart-box {
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 14px;
+      padding: 14px;
+      margin-bottom: 16px;
       background: #ffffff;
     }
 
@@ -481,7 +588,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--text-main);
       padding-bottom: 8px;
@@ -492,38 +599,30 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
+      padding: 9px 0;
       border-bottom: 1px dashed var(--border);
-      font-size: 12px;
+      font-size: 12.5px;
+      gap: 8px;
     }
 
-    .cart-item:last-child {
-      border-bottom: none;
-    }
-
-    .cart-item-info strong {
-      display: block;
-      color: var(--text-main);
-    }
-
-    .cart-item-info span {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item-info strong { display: block; color: var(--text-main); }
+    .cart-item-info span { font-size: 11px; color: var(--text-muted); }
 
     .cart-item-right {
       display: flex;
       align-items: center;
       gap: 8px;
+      white-space: nowrap;
     }
 
     .btn-del-item {
       background: var(--rose-light);
       color: var(--rose);
       border: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
       font-weight: 700;
       cursor: pointer;
     }
@@ -532,14 +631,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 8px;
+      padding-top: 10px;
       margin-top: 4px;
       border-top: 1px solid var(--border);
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
     }
 
-    /* Kalkulasi Akhir Pesanan */
     .calc-summary {
       background: #ecfdf5;
       border: 1px solid #a7f3d0;
@@ -551,9 +649,9 @@
     .calc-line {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
+      font-size: 12.5px;
       color: #065f46;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
     .calc-final {
@@ -563,25 +661,24 @@
       padding-top: 8px;
       margin-top: 6px;
       border-top: 1px dashed #6ee7b7;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 800;
       color: var(--emerald);
     }
 
-    .calc-final.minus {
-      color: var(--rose);
-    }
+    .calc-final.minus { color: var(--rose); }
 
     .btn-submit {
       width: 100%;
-      padding: 13px;
+      padding: 14px;
       border: none;
       border-radius: 12px;
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 700;
       color: #ffffff;
       background: var(--primary);
       cursor: pointer;
+      min-height: 48px;
       box-shadow: 0 4px 10px rgba(15, 118, 110, 0.25);
     }
 
@@ -590,11 +687,11 @@
       box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25);
     }
 
-    .btn-submit:disabled {
-      opacity: 0.6;
-    }
+    .btn-submit:disabled { opacity: 0.6; }
 
-    /* Bottom Navigation */
+    /* =========================================
+       NAVIGATION: BOTTOM BAR (HP) -> SIDEBAR (TABLET/LAPTOP)
+       ========================================= */
     nav {
       position: fixed;
       bottom: 0;
@@ -602,15 +699,20 @@
       right: 0;
       background: #ffffff;
       border-top: 1px solid var(--border);
-      z-index: 30;
+      z-index: 40;
+      padding-bottom: env(safe-area-inset-bottom);
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar-brand {
+      display: none;
     }
 
     .nav-inner {
-      max-width: 500px;
-      margin: 0 auto;
+      width: 100%;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      height: 64px;
+      height: var(--bottom-nav-h);
     }
 
     .nav-btn {
@@ -621,10 +723,11 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      font-size: 11px;
+      font-size: 11.5px;
       font-weight: 500;
       color: #94a3b8;
       cursor: pointer;
+      transition: all 0.15s;
     }
 
     .nav-btn.active {
@@ -635,6 +738,141 @@
     .nav-btn svg {
       width: 22px;
       height: 22px;
+    }
+
+    /* =========================================
+       BREAKPOINT 1: TABLET (>= 768px)
+       ========================================= */
+    @media (min-width: 768px) {
+      body {
+        padding-bottom: 24px;
+      }
+
+      /* Transformasi Bottom Bar menjadi Sidebar Kiri */
+      nav {
+        top: 0;
+        right: auto;
+        width: var(--sidebar-w);
+        height: 100dvh;
+        border-top: none;
+        border-right: 1px solid var(--border);
+        padding: 20px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-shadow: none;
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 4px 10px 16px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .brand-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 16px;
+      }
+
+      .brand-text strong {
+        display: block;
+        font-size: 14px;
+        color: var(--text-main);
+      }
+
+      .brand-text span {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+
+      .nav-inner {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        gap: 6px;
+      }
+
+      .nav-btn {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-size: 13.5px;
+        gap: 12px;
+        color: #475569;
+      }
+
+      .nav-btn:hover {
+        background: #f8fafc;
+        color: var(--text-main);
+      }
+
+      .nav-btn.active {
+        background: var(--primary-light);
+        color: var(--primary);
+      }
+
+      header, main {
+        margin-left: var(--sidebar-w);
+        width: calc(100% - var(--sidebar-w));
+      }
+
+      .channel-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* =========================================
+       BREAKPOINT 2: LAPTOP & DESKTOP (>= 1024px)
+       ========================================= */
+    @media (min-width: 1024px) {
+      .metrics-grid {
+        grid-template-columns: 1.45fr 1fr;
+        align-items: stretch;
+      }
+
+      .sub-metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-bottom-grid {
+        grid-template-columns: 1.15fr 1fr;
+      }
+
+      .channel-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .order-split-grid {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+
+    /* =========================================
+       BREAKPOINT 3: WIDE DESKTOP (>= 1280px)
+       ========================================= */
+    @media (min-width: 1280px) {
+      .metrics-grid {
+        grid-template-columns: 1.3fr 1fr;
+      }
+
+      .sub-metrics-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .channel-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
 
     /* Loader & Toast */
@@ -651,20 +889,20 @@
 
     .toast {
       position: fixed;
-      top: 72px;
+      top: 74px;
       left: 50%;
       transform: translateX(-50%);
       background: #0f172a;
       color: #ffffff;
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
-      padding: 10px 18px;
+      padding: 10px 20px;
       border-radius: 30px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s;
-      z-index: 50;
+      z-index: 60;
       white-space: nowrap;
     }
 
@@ -673,213 +911,15 @@
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="header-inner">
-      <div class="header-title">
-        <h1>Keuangan Toko</h1>
-        <p id="subtitlePeriod">Rekap Harian & Bulanan</p>
-      </div>
-      <div class="header-controls">
-        <input type="date" id="filterDate" class="date-filter">
-        <button onclick="loadDashboard()" class="btn-refresh" title="Refresh Data">
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-          </svg>
-        </button>
+  <!-- Navigation (Bottom Bar di HP, Sidebar Kiri di Tablet/Laptop) -->
+  <nav>
+    <div class="sidebar-brand">
+      <div class="brand-icon">Rp</div>
+      <div class="brand-text">
+        <strong>Keuangan Toko</strong>
+        <span>Multi-Channel POS</span>
       </div>
     </div>
-  </header>
-
-  <main>
-    <!-- TAB 1: DASHBOARD -->
-    <section id="view-dashboard" style="display: flex; flex-direction: column; gap: 14px;">
-
-      <!-- Switcher Harian / Bulanan -->
-      <div class="period-switch">
-        <button id="btnModeDaily" class="period-btn active" onclick="setDashboardMode('daily')">Ringkasan Harian</button>
-        <button id="btnModeMonthly" class="period-btn" onclick="setDashboardMode('monthly')">Ringkasan Bulanan</button>
-      </div>
-
-      <!-- Hero Card: Total Profit - Pengeluaran = Laba Bersih -->
-      <div class="hero-card">
-        <div class="hero-top">
-          <div>
-            <div id="heroLabel" class="hero-label">Laba Bersih Harian</div>
-            <div id="valLabaBersih" class="hero-amount">Rp 0</div>
-            <div class="hero-formula">Total Profit − Total Pengeluaran</div>
-          </div>
-          <div id="loadingIndicator" class="loader hidden"></div>
-        </div>
-        <div class="hero-grid">
-          <div>
-            <div class="hero-sub-label">Total Profit Pesanan</div>
-            <div id="valTotalProfit" class="hero-sub-val text-profit-light">+ Rp 0</div>
-          </div>
-          <div>
-            <div class="hero-sub-label">Total Pengeluaran</div>
-            <div id="valPengeluaran" class="hero-sub-val text-expense-light">- Rp 0</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Penghasilan Akhir & Total Modal -->
-      <div class="grid-2">
-        <div class="card">
-          <div class="stat-label">Penghasilan Akhir (Omzet)</div>
-          <div id="valOmzet" class="stat-val">Rp 0</div>
-        </div>
-        <div class="card">
-          <div class="stat-label">Total Modal Barang</div>
-          <div id="valModal" class="stat-val">Rp 0</div>
-        </div>
-      </div>
-
-      <!-- Performa per Channel -->
-      <div class="card">
-        <div class="section-header">
-          <div id="channelSectionTitle" class="section-title">Profit & Omzet per Channel (Harian)</div>
-        </div>
-        <div id="channelList" class="channel-grid">
-          <!-- Diisi via JS -->
-        </div>
-      </div>
-
-      <!-- Riwayat Pesanan & Pengeluaran Tanggal Dipilih -->
-      <div class="card">
-        <div class="section-header">
-          <div class="section-title">Riwayat Tanggal Dipilih</div>
-          <span id="countTrx" class="badge-count">0 data</span>
-        </div>
-        <div id="activityList">
-          <div class="empty-state">Memuat data dari Google Sheets...</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 2: INPUT PENJUALAN PER PESANAN -->
-    <section id="view-penjualan" class="hidden">
-      <div class="card">
-        <div class="form-title">Input Pesanan Baru</div>
-
-        <div class="form-group">
-          <label class="form-label">Tanggal Pesanan</label>
-          <input type="date" id="trxTanggal" class="form-control">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Channel / Marketplace</label>
-          <div class="channel-selector">
-            <button type="button" data-val="Shopee" class="ch-btn active">Shopee</button>
-            <button type="button" data-val="TikTok" class="ch-btn">TikTok</button>
-            <button type="button" data-val="Offline" class="ch-btn">Offline</button>
-            <button type="button" data-val="Lazada" class="ch-btn">Lazada</button>
-            <button type="button" data-val="Tokopedia" class="ch-btn">Tokopedia</button>
-            <button type="button" data-val="Blibli" class="ch-btn">Blibli</button>
-          </div>
-          <input type="hidden" id="trxChannel" value="Shopee">
-        </div>
-
-        <!-- Step 1: Input Barang ke Dalam Pesanan -->
-        <div class="item-builder-box">
-          <div class="item-builder-title">+ Tambah Barang dalam Pesanan Ini</div>
-          <input type="text" id="itemNama" placeholder="Nama barang (contoh: Beras 5kg)" class="form-control">
-          <div class="row-qty-modal">
-            <input type="number" id="itemQty" value="1" min="1" placeholder="Qty" class="form-control">
-            <input type="number" id="itemModal" placeholder="Modal satuan (Rp)" class="form-control">
-          </div>
-          <button type="button" onclick="tambahBarangKePesanan()" class="btn-add-item">
-            + Masukkan ke Daftar Barang
-          </button>
-        </div>
-
-        <!-- Daftar Barang yang Sudah Diinput -->
-        <div class="cart-box">
-          <div class="cart-header">
-            <span>Daftar Barang Pesanan</span>
-            <span id="cartCount">0 barang</span>
-          </div>
-          <div id="cartList">
-            <div style="text-align:center; color:#94a3b8; font-size:11.5px; padding:14px 0;">
-              Belum ada barang. Tambahkan barang 1, barang 2, dst di atas.
-            </div>
-          </div>
-          <div class="cart-total-row">
-            <span>Total Modal Barang:</span>
-            <span id="cartTotalModal" style="color:#0f172a;">Rp 0</span>
-          </div>
-        </div>
-
-        <!-- Step 2: Input Penghasilan Akhir -->
-        <div class="form-group">
-          <label class="form-label">Penghasilan Akhir / Dana Masuk (Rp)</label>
-          <input type="number" id="trxPenghasilanAkhir" placeholder="Masukkan penghasilan bersih dari marketplace" oninput="hitungProfitPesanan()" class="form-control" style="font-weight:700; font-size:15px;">
-        </div>
-
-        <!-- Ringkasan Kalkulasi Pesanan -->
-        <div class="calc-summary">
-          <div class="calc-line">
-            <span>Penghasilan Akhir:</span>
-            <span id="sumPenghasilan">Rp 0</span>
-          </div>
-          <div class="calc-line">
-            <span>Total Modal (Barang 1 + 2 + dst):</span>
-            <span id="sumModal">- Rp 0</span>
-          </div>
-          <div id="calcFinalRow" class="calc-final">
-            <span>Profit Pesanan Ini:</span>
-            <span id="sumProfit">Rp 0</span>
-          </div>
-        </div>
-
-        <button type="button" id="btnSubmitTrx" onclick="simpanPesanan()" class="btn-submit">
-          Simpan Penjualan
-        </button>
-      </div>
-    </section>
-
-    <!-- TAB 3: INPUT PENGELUARAN -->
-    <section id="view-pengeluaran" class="hidden">
-      <div class="card">
-        <div class="form-title">Catat Pengeluaran Operasional</div>
-        <form id="formPengeluaran">
-          <div class="form-group">
-            <label class="form-label">Tanggal Pengeluaran</label>
-            <input type="date" id="expTanggal" required class="form-control">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Kategori</label>
-            <select id="expKategori" class="form-control">
-              <option value="Packing & Lakban">Packing, Bubble Wrap & Lakban</option>
-              <option value="Iklan / Ads">Iklan Marketplace / Ads</option>
-              <option value="Bensin & Ongkir">Bensin / Ongkir Kulakan</option>
-              <option value="Operasional Harian">Operasional (Makan/Listrik/Kuota)</option>
-              <option value="Lainnya">Lainnya</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Keterangan Detail</label>
-            <input type="text" id="expKeterangan" placeholder="Contoh: Beli lakban 6 roll & kertas resi" required class="form-control">
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Nominal Pengeluaran (Rp)</label>
-            <input type="number" id="expNominal" placeholder="0" required class="form-control" style="font-weight:700; color:#e11d48;">
-          </div>
-
-          <button type="submit" id="btnSubmitExp" class="btn-submit rose">Simpan Pengeluaran</button>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <!-- Toast -->
-  <div id="toast" class="toast">Tersimpan!</div>
-
-  <!-- Bottom Navigation -->
-  <nav>
     <div class="nav-inner">
       <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn active">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -902,14 +942,344 @@
     </div>
   </nav>
 
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <div class="header-title">
+        <h1>Keuangan Toko</h1>
+        <p id="subtitlePeriod">Rekap Harian & Bulanan</p>
+      </div>
+      <div class="header-controls">
+        <input type="date" id="filterDate" class="date-filter">
+        <button onclick="loadDashboard()" class="btn-refresh" title="Refresh Data">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Banner Install PWA -->
+    <div id="installBanner" class="install-banner hidden">
+      <div>
+        <h4>Install Aplikasi ke Perangkat</h4>
+        <p>Buka layar penuh seperti aplikasi asli dari layar utama.</p>
+      </div>
+      <button id="btnInstall" class="btn-install">Install</button>
+    </div>
+
+    <!-- TAB 1: DASHBOARD -->
+    <section id="view-dashboard">
+      <div class="dashboard-stack">
+
+        <!-- Switcher Harian / Bulanan -->
+        <div class="period-switch">
+          <button id="btnModeDaily" class="period-btn active" onclick="setDashboardMode('daily')">Ringkasan Harian</button>
+          <button id="btnModeMonthly" class="period-btn" onclick="setDashboardMode('monthly')">Ringkasan Bulanan</button>
+        </div>
+
+        <!-- Top KPI Row -->
+        <div class="metrics-grid">
+          <!-- Hero Card -->
+          <div class="hero-card">
+            <div class="hero-top">
+              <div>
+                <div id="heroLabel" class="hero-label">Laba Bersih Harian</div>
+                <div id="valLabaBersih" class="hero-amount">Rp 0</div>
+                <div class="hero-formula">Total Profit − Total Pengeluaran</div>
+              </div>
+              <div id="loadingIndicator" class="loader hidden"></div>
+            </div>
+            <div class="hero-grid">
+              <div>
+                <div class="hero-sub-label">Total Profit Pesanan</div>
+                <div id="valTotalProfit" class="hero-sub-val text-profit-light">+ Rp 0</div>
+              </div>
+              <div>
+                <div class="hero-sub-label">Total Pengeluaran</div>
+                <div id="valPengeluaran" class="hero-sub-val text-expense-light">- Rp 0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Omzet & Modal -->
+          <div class="sub-metrics-grid">
+            <div class="card stat-card">
+              <div class="stat-label">Penghasilan Akhir (Omzet)</div>
+              <div id="valOmzet" class="stat-val">Rp 0</div>
+              <div class="stat-hint">Dana bersih cair dari channel</div>
+            </div>
+            <div class="card stat-card">
+              <div class="stat-label">Total Modal Barang</div>
+              <div id="valModal" class="stat-val">Rp 0</div>
+              <div class="stat-hint">Akumulasi HPP barang terjual</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Grid: Channel Performance & Recent Activity -->
+        <div class="dashboard-bottom-grid">
+          <div class="card">
+            <div class="section-header">
+              <div id="channelSectionTitle" class="section-title">Profit & Omzet per Channel (Harian)</div>
+            </div>
+            <div id="channelList" class="channel-grid">
+              <!-- Diisi via JS -->
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="section-header">
+              <div class="section-title">Riwayat Tanggal Dipilih</div>
+              <span id="countTrx" class="badge-count">0 data</span>
+            </div>
+            <div id="activityList" class="activity-scroll">
+              <div class="empty-state">Memuat data dari Google Sheets...</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 2: INPUT PENJUALAN PER PESANAN -->
+    <section id="view-penjualan" class="hidden">
+      <div class="order-split-grid">
+
+        <!-- Kolom Kiri: Info Pesanan & Form Tambah Barang -->
+        <div class="card">
+          <div class="form-title">1. Detail Pesanan & Tambah Barang</div>
+
+          <div class="form-group">
+            <label class="form-label">Tanggal Pesanan</label>
+            <input type="date" id="trxTanggal" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Channel / Marketplace</label>
+            <div class="channel-selector">
+              <button type="button" data-val="Shopee" class="ch-btn active">Shopee</button>
+              <button type="button" data-val="TikTok" class="ch-btn">TikTok</button>
+              <button type="button" data-val="Offline" class="ch-btn">Offline</button>
+              <button type="button" data-val="Lazada" class="ch-btn">Lazada</button>
+              <button type="button" data-val="Tokopedia" class="ch-btn">Tokopedia</button>
+              <button type="button" data-val="Blibli" class="ch-btn">Blibli</button>
+            </div>
+            <input type="hidden" id="trxChannel" value="Shopee">
+          </div>
+
+          <div class="item-builder-box">
+            <div class="item-builder-title">+ Tambah Barang dalam Pesanan Ini</div>
+            <input type="text" id="itemNama" placeholder="Nama barang (contoh: Beras 5kg)" class="form-control">
+            <div class="row-qty-modal">
+              <input type="number" id="itemQty" value="1" min="1" placeholder="Qty" class="form-control">
+              <input type="number" id="itemModal" placeholder="Modal satuan (Rp)" class="form-control">
+            </div>
+            <button type="button" onclick="tambahBarangKePesanan()" class="btn-add-item">
+              + Masukkan ke Daftar Barang
+            </button>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Keranjang & Kalkulasi Akhir -->
+        <div class="card">
+          <div class="form-title">2. Daftar Barang & Hitung Profit</div>
+
+          <div class="cart-box">
+            <div class="cart-header">
+              <span>Daftar Barang Pesanan</span>
+              <span id="cartCount">0 barang</span>
+            </div>
+            <div id="cartList">
+              <div style="text-align:center; color:#94a3b8; font-size:12px; padding:16px 0;">
+                Belum ada barang. Tambahkan barang 1, barang 2, dst.
+              </div>
+            </div>
+            <div class="cart-total-row">
+              <span>Total Modal Barang:</span>
+              <span id="cartTotalModal" style="color:#0f172a;">Rp 0</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Penghasilan Akhir / Dana Masuk (Rp)</label>
+            <input type="number" id="trxPenghasilanAkhir" placeholder="Masukkan penghasilan bersih dari marketplace" oninput="hitungProfitPesanan()" class="form-control" style="font-weight:700; font-size:15px;">
+          </div>
+
+          <div class="calc-summary">
+            <div class="calc-line">
+              <span>Penghasilan Akhir:</span>
+              <span id="sumPenghasilan">Rp 0</span>
+            </div>
+            <div class="calc-line">
+              <span>Total Modal (Barang 1 + 2 + dst):</span>
+              <span id="sumModal">- Rp 0</span>
+            </div>
+            <div id="calcFinalRow" class="calc-final">
+              <span>Profit Pesanan Ini:</span>
+              <span id="sumProfit">Rp 0</span>
+            </div>
+          </div>
+
+          <button type="button" id="btnSubmitTrx" onclick="simpanPesanan()" class="btn-submit">
+            Simpan Penjualan
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: INPUT PENGELUARAN -->
+    <section id="view-pengeluaran" class="hidden">
+      <div class="expense-container">
+        <div class="card">
+          <div class="form-title">Catat Pengeluaran Operasional</div>
+          <form id="formPengeluaran">
+            <div class="form-group">
+              <label class="form-label">Tanggal Pengeluaran</label>
+              <input type="date" id="expTanggal" required class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Kategori</label>
+              <select id="expKategori" class="form-control">
+                <option value="Packing & Lakban">Packing, Bubble Wrap & Lakban</option>
+                <option value="Iklan / Ads">Iklan Marketplace / Ads</option>
+                <option value="Bensin & Ongkir">Bensin / Ongkir Kulakan</option>
+                <option value="Operasional Harian">Operasional (Makan/Listrik/Kuota)</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Keterangan Detail</label>
+              <input type="text" id="expKeterangan" placeholder="Contoh: Beli lakban 6 roll & kertas resi" required class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Nominal Pengeluaran (Rp)</label>
+              <input type="number" id="expNominal" placeholder="0" required class="form-control" style="font-weight:700; color:#e11d48;">
+            </div>
+
+            <button type="submit" id="btnSubmitExp" class="btn-submit rose">Simpan Pengeluaran</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast">Tersimpan!</div>
+
   <script>
     // GANTI DENGAN URL WEB APP APPS SCRIPT ANDA
     const API_URL = 'https://script.google.com/macros/s/AKfycbzAdUxNAE9-YHHNQXycV4R95jtFnVtk1BYxqSeD7fnmF7xQX_HLHz4UBunfrscxMdF1/exec';
 
-    let dashboardData = null;
-    let currentMode = 'daily'; // 'daily' atau 'monthly'
-    let orderItems = [];
+    const QUEUE_KEY = 'keuangan_toko_sync_queue';
 
+    let dashboardData = null;
+    let currentMode = 'daily';
+    let orderItems = [];
+    let isSyncing = false;
+
+    // ==========================================
+    // STORAGE & ANTREAN TAK TERLIHAT (BACKGROUND QUEUE)
+    // ==========================================
+    let memoryQueue = [];
+
+    function getSyncQueue() {
+      try {
+        const raw = localStorage.getItem(QUEUE_KEY);
+        return raw ? JSON.parse(raw) : memoryQueue;
+      } catch (e) {
+        return memoryQueue;
+      }
+    }
+
+    function saveSyncQueue(queue) {
+      memoryQueue = queue;
+      try {
+        localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+      } catch (e) {}
+      updateSyncBadge();
+    }
+
+    // Indikator kecil & halus di pojok kanan bawah (hanya muncul saat ada antrean)
+    function updateSyncBadge() {
+      let badge = document.getElementById('syncStatusPill');
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.id = 'syncStatusPill';
+        badge.style.cssText = 'position:fixed;bottom:74px;right:14px;background:#0f172a;color:#ccfbf1;font-size:11px;font-weight:600;padding:6px 12px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,0.18);z-index:45;display:none;align-items:center;gap:6px;';
+        document.body.appendChild(badge);
+      }
+
+      const count = getSyncQueue().length;
+      if (count > 0) {
+        badge.style.display = 'flex';
+        badge.innerHTML = `<span style="width:7px;height:7px;border-radius:50%;background:#14b8a6;display:inline-block;"></span> Menyimpan (${count})...`;
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function enqueueData(payload) {
+      const queue = getSyncQueue();
+      queue.push({
+        queueId: Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+        payload: payload
+      });
+      saveSyncQueue(queue);
+      processSyncQueue();
+    }
+
+    async function processSyncQueue() {
+      if (isSyncing) return;
+      if (API_URL.includes('URL_WEB_APP')) return;
+
+      const queue = getSyncQueue();
+      if (queue.length === 0) return;
+
+      isSyncing = true;
+      updateSyncBadge();
+
+      while (getSyncQueue().length > 0) {
+        const currentQueue = getSyncQueue();
+        const currentItem = currentQueue[0];
+
+        try {
+          await fetch(API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(currentItem.payload)
+          });
+
+          // Hapus item pertama setelah berhasil dikirim
+          const updated = getSyncQueue();
+          updated.shift();
+          saveSyncQueue(updated);
+        } catch (err) {
+          // Jika offline/gagal, hentikan loop sementara dan coba lagi 4 detik kemudian
+          isSyncing = false;
+          setTimeout(processSyncQueue, 4000);
+          return;
+        }
+      }
+
+      isSyncing = false;
+      updateSyncBadge();
+      // Refresh data dashboard diam-diam setelah seluruh antrean masuk ke Sheets
+      loadDashboard(true);
+    }
+
+    window.addEventListener('online', processSyncQueue);
+
+    // ==========================================
+    // INISIALISASI TANGGAL & HELPER
+    // ==========================================
     const getTodayWIB = () => {
       const now = new Date();
       const offset = now.getTimezoneOffset() * 60000;
@@ -927,7 +1297,7 @@
       const t = document.getElementById('toast');
       t.textContent = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2800);
+      setTimeout(() => t.classList.remove('show'), 2200);
     }
 
     function switchTab(tab) {
@@ -937,6 +1307,7 @@
       });
       document.getElementById('view-' + tab).classList.remove('hidden');
       document.getElementById('nav-' + tab).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Pilih Channel
@@ -1002,8 +1373,8 @@
 
       if (orderItems.length === 0) {
         listEl.innerHTML = `
-          <div style="text-align:center; color:#94a3b8; font-size:11.5px; padding:14px 0;">
-            Belum ada barang. Tambahkan barang 1, barang 2, dst di atas.
+          <div style="text-align:center; color:#94a3b8; font-size:12px; padding:16px 0;">
+            Belum ada barang. Tambahkan barang 1, barang 2, dst.
           </div>
         `;
         totalModalEl.textContent = 'Rp 0';
@@ -1053,16 +1424,16 @@
       }
     }
 
-    async function simpanPesanan() {
+    // SIMPAN PENJUALAN INSTAN (TANPA TUNGGU LOADING)
+    function simpanPesanan() {
       if (API_URL.includes('URL_WEB_APP')) {
         showToast('Masukkan URL Apps Script terlebih dahulu!');
         return;
       }
 
-      // Jika user langsung mengisi kolom barang tapi lupa klik tombol "+ Masukkan ke Daftar Barang"
       const draftNama = document.getElementById('itemNama').value.trim();
       const draftModal = document.getElementById('itemModal').value;
-      if (orderItems.length === 0 && draftNama && draftModal !== '') {
+      if (draftNama && draftModal !== '') {
         tambahBarangKePesanan();
       }
 
@@ -1078,39 +1449,27 @@
         return;
       }
 
-      const btn = document.getElementById('btnSubmitTrx');
-      btn.disabled = true;
-      btn.textContent = 'Menyimpan Pesanan...';
-
       const payload = {
         type: 'transaksi',
         tanggal: document.getElementById('trxTanggal').value,
         channel: document.getElementById('trxChannel').value,
-        items: orderItems,
+        items: [...orderItems],
         penghasilanAkhir: Number(penghasilanVal)
       };
 
-      try {
-        await fetch(API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+      // Masukkan ke antrean latar belakang & langsung reset UI
+      enqueueData(payload);
 
-        showToast('Pesanan berhasil disimpan!');
-        orderItems = [];
-        renderOrderCart();
-        document.getElementById('trxPenghasilanAkhir').value = '';
-        hitungProfitPesanan();
-        switchTab('dashboard');
-        setTimeout(loadDashboard, 1300);
-      } catch (err) {
-        showToast('Gagal menyimpan pesanan');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Simpan Penjualan';
-      }
+      orderItems = [];
+      renderOrderCart();
+      document.getElementById('itemNama').value = '';
+      document.getElementById('itemQty').value = '1';
+      document.getElementById('itemModal').value = '';
+      document.getElementById('trxPenghasilanAkhir').value = '';
+      hitungProfitPesanan();
+      document.getElementById('itemNama').focus();
+
+      showToast('Tersimpan! Silakan input pesanan berikutnya.');
     }
 
     // ==========================================
@@ -1140,7 +1499,6 @@
       document.getElementById('valOmzet').textContent = formatRp(stats.penghasilanAkhir);
       document.getElementById('valModal').textContent = formatRp(stats.totalModal);
 
-      // Render Channel Breakdown
       const chContainer = document.getElementById('channelList');
       chContainer.innerHTML = '';
       Object.entries(stats.channelBreakdown).forEach(([ch, val]) => {
@@ -1156,14 +1514,14 @@
       });
     }
 
-    async function loadDashboard() {
+    async function loadDashboard(silent = false) {
       if (API_URL.includes('URL_WEB_APP')) {
-        showToast('Masukkan URL Apps Script terlebih dahulu!');
+        if (!silent) showToast('Masukkan URL Apps Script terlebih dahulu!');
         return;
       }
 
       const date = document.getElementById('filterDate').value;
-      document.getElementById('loadingIndicator').classList.remove('hidden');
+      if (!silent) document.getElementById('loadingIndicator').classList.remove('hidden');
 
       try {
         const res = await fetch(`${API_URL}?action=getDashboard&date=${date}`, { redirect: 'follow' });
@@ -1173,7 +1531,6 @@
           dashboardData = data;
           renderDashboardSummary();
 
-          // Render Riwayat Tanggal Dipilih
           const actList = document.getElementById('activityList');
           const totalItems = data.recentTrx.length + data.recentExp.length;
           document.getElementById('countTrx').textContent = `${totalItems} data`;
@@ -1212,29 +1569,25 @@
               `;
             });
           }
-        } else {
+        } else if (!silent) {
           showToast('Error: ' + (data.message || 'Gagal membaca data'));
         }
       } catch (err) {
-        showToast('Gagal memuat dashboard. Cek deployment Apps Script.');
+        if (!silent) showToast('Gagal memuat dashboard. Cek deployment Apps Script.');
       } finally {
         document.getElementById('loadingIndicator').classList.add('hidden');
       }
     }
 
-    document.getElementById('filterDate').addEventListener('change', loadDashboard);
+    document.getElementById('filterDate').addEventListener('change', () => loadDashboard(false));
 
-    // Submit Pengeluaran
-    document.getElementById('formPengeluaran').addEventListener('submit', async (e) => {
+    // SIMPAN PENGELUARAN INSTAN (TANPA TUNGGU LOADING)
+    document.getElementById('formPengeluaran').addEventListener('submit', (e) => {
       e.preventDefault();
       if (API_URL.includes('URL_WEB_APP')) {
         showToast('Masukkan URL Apps Script terlebih dahulu!');
         return;
       }
-
-      const btn = document.getElementById('btnSubmitExp');
-      btn.disabled = true;
-      btn.textContent = 'Menyimpan...';
 
       const payload = {
         type: 'pengeluaran',
@@ -1244,31 +1597,41 @@
         nominal: document.getElementById('expNominal').value
       };
 
-      try {
-        await fetch(API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        showToast('Pengeluaran berhasil dicatat!');
-        document.getElementById('expKeterangan').value = '';
-        document.getElementById('expNominal').value = '';
-        switchTab('dashboard');
-        setTimeout(loadDashboard, 1300);
-      } catch (err) {
-        showToast('Terjadi kesalahan koneksi');
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Simpan Pengeluaran';
-      }
+      enqueueData(payload);
+
+      document.getElementById('expKeterangan').value = '';
+      document.getElementById('expNominal').value = '';
+      document.getElementById('expKeterangan').focus();
+
+      showToast('Tersimpan! Silakan input pengeluaran berikutnya.');
     });
 
+    // Service Worker & PWA Install Prompt
     if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
 
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').classList.remove('hidden');
+    });
+
+    document.getElementById('btnInstall').addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        document.getElementById('installBanner').classList.add('hidden');
+      }
+      deferredPrompt = null;
+    });
+
+    // Jalankan antrean tertunda (jika ada) & muat dashboard saat aplikasi dibuka
+    processSyncQueue();
     loadDashboard();
   </script>
+
 </body>
 </html>
