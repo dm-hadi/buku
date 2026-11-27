@@ -812,6 +812,195 @@
     }
 
     .toast.show { opacity: 1; }
+
+    /* ========================================== */
+    /* MODE LANSKAP (HP & TABLET)                 */
+    /* ========================================== */
+
+    /* 1. HP & Tablet Lanskap: Pindahkan menu bawah ke sidebar kiri agar layar vertikal lega */
+    @media (orientation: landscape) and (min-width: 560px) {
+      body {
+        padding-bottom: 20px;
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
+
+      nav {
+        top: 0;
+        right: auto;
+        bottom: 0;
+        width: 185px;
+        height: 100dvh;
+        border-top: none;
+        border-right: 1px solid var(--border);
+        padding: 14px 10px;
+        padding-left: calc(10px + env(safe-area-inset-left));
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow-y: auto;
+        box-shadow: none;
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 2px 6px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .brand-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+
+      .brand-text strong { display: block; font-size: 13px; color: var(--text-main); }
+      .brand-text span { font-size: 10.5px; color: var(--text-muted); }
+
+      .nav-inner {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        gap: 4px;
+      }
+
+      .nav-btn {
+        flex-direction: row;
+        justify-content: flex-start;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 12.5px;
+        gap: 10px;
+        color: #475569;
+      }
+
+      .nav-btn:hover { background: #f8fafc; color: var(--text-main); }
+      .nav-btn.active { background: var(--primary-light); color: var(--primary); }
+
+      header, main {
+        margin-left: calc(185px + env(safe-area-inset-left));
+        width: calc(100% - 185px - env(safe-area-inset-left) - env(safe-area-inset-right));
+      }
+
+      /* Turunkan posisi indikator antrean ke pojok kanan bawah */
+      #syncStatusPill {
+        bottom: 16px !important;
+      }
+    }
+
+    /* 2. Tablet Lanskap (>= 768px): Kembalikan lebar sidebar penuh */
+    @media (orientation: landscape) and (min-width: 768px) {
+      nav {
+        width: var(--sidebar-w);
+        padding: 20px 14px;
+        gap: 20px;
+      }
+
+      .nav-btn {
+        padding: 12px 14px;
+        font-size: 13.5px;
+        gap: 12px;
+      }
+
+      header, main {
+        margin-left: var(--sidebar-w);
+        width: calc(100% - var(--sidebar-w));
+      }
+    }
+
+    /* 3. Layar Pendek (HP Lanskap max-height 540px): Rampingkan header & dropdown saat keyboard muncul */
+    @media (orientation: landscape) and (max-height: 540px) {
+      header {
+        position: static;
+      }
+
+      .header-inner {
+        padding: 10px 16px;
+      }
+
+      .header-title p {
+        display: none;
+      }
+
+      main {
+        padding: 12px 16px;
+        gap: 12px;
+      }
+
+      .card {
+        padding: 14px;
+      }
+
+      .hero-card {
+        padding: 14px 16px;
+      }
+
+      .hero-amount {
+        font-size: 22px;
+      }
+
+      .hero-grid {
+        margin-top: 10px;
+        padding-top: 10px;
+      }
+
+      .autocomplete-list {
+        max-height: 140px;
+      }
+
+      .activity-scroll {
+        max-height: 260px;
+      }
+
+      .toast {
+        top: 14px;
+      }
+    }
+
+    /* 4. Grid 2 Kolom Berdampingan di HP Lebar & Semua Tablet Lanskap */
+    @media (orientation: landscape) and (min-width: 720px) {
+      .metrics-grid {
+        grid-template-columns: 1.35fr 1fr;
+        align-items: stretch;
+      }
+
+      .sub-metrics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-bottom-grid {
+        grid-template-columns: 1.15fr 1fr;
+      }
+
+      .order-split-grid {
+        grid-template-columns: 1.05fr 0.95fr;
+      }
+
+      .channel-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (orientation: landscape) and (min-width: 1100px) {
+      .sub-metrics-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .channel-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
   </style>
 </head>
 <body>
