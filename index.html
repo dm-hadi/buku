@@ -53,9 +53,7 @@
       display: none !important;
     }
 
-    /* =========================================
-       HEADER (FLUID WIDTH)
-       ========================================= */
+    /* HEADER */
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #ffffff;
@@ -123,20 +121,11 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
     }
 
-    .btn-refresh:hover {
-      background: rgba(255, 255, 255, 0.25);
-    }
+    .btn-refresh:active { transform: scale(0.94); }
 
-    .btn-refresh:active {
-      transform: scale(0.94);
-    }
-
-    /* =========================================
-       MAIN CONTAINER (FLUID & RESPONSIVE)
-       ========================================= */
+    /* MAIN */
     main {
       flex: 1;
       width: 100%;
@@ -148,7 +137,6 @@
       gap: 16px;
     }
 
-    /* Install Banner */
     .install-banner {
       background: #0f172a;
       color: #ffffff;
@@ -158,7 +146,6 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
     }
 
     .install-banner h4 { font-size: 13.5px; font-weight: 700; }
@@ -176,9 +163,7 @@
       white-space: nowrap;
     }
 
-    /* =========================================
-       DASHBOARD LAYOUT & CARDS
-       ========================================= */
+    /* DASHBOARD */
     .dashboard-stack {
       display: flex;
       flex-direction: column;
@@ -213,7 +198,6 @@
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     }
 
-    /* Top Metrics Grid */
     .metrics-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -226,7 +210,6 @@
       gap: 14px;
     }
 
-    /* Hero Profit Card */
     .hero-card {
       background: linear-gradient(135deg, #0f766e 0%, #065f46 100%);
       color: #ffffff;
@@ -280,7 +263,6 @@
     .text-profit-light { color: #6ee7b7; }
     .text-expense-light { color: #fecdd3; }
 
-    /* Standard Cards */
     .card {
       background: var(--card);
       border-radius: var(--radius);
@@ -295,26 +277,10 @@
       justify-content: center;
     }
 
-    .stat-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+    .stat-val { font-size: clamp(16px, 2vw, 22px); font-weight: 800; margin-top: 6px; color: var(--text-main); }
+    .stat-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
-    .stat-val {
-      font-size: clamp(16px, 2vw, 22px);
-      font-weight: 800;
-      margin-top: 6px;
-      color: var(--text-main);
-    }
-
-    .stat-hint {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* Dashboard Bottom Grid (Channels + Activity) */
     .dashboard-bottom-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -329,11 +295,7 @@
       margin-bottom: 14px;
     }
 
-    .section-title {
-      font-size: 14.5px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
+    .section-title { font-size: 14.5px; font-weight: 700; color: var(--text-main); }
 
     .badge-count {
       font-size: 11px;
@@ -344,7 +306,6 @@
       font-weight: 600;
     }
 
-    /* Channel Breakdown */
     .channel-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -369,10 +330,7 @@
       gap: 6px;
     }
 
-    .ch-item-sub {
-      font-size: 11px;
-      opacity: 0.85;
-    }
+    .ch-item-sub { font-size: 11px; opacity: 0.85; }
 
     .ch-Offline { background: #f8fafc; color: #334155; }
     .ch-Shopee { background: #fff7ed; color: #c2410c; border-color: #fed7aa; }
@@ -381,11 +339,7 @@
     .ch-Tokopedia { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
     .ch-Blibli { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
 
-    /* Activity List */
-    .activity-scroll {
-      max-height: 460px;
-      overflow-y: auto;
-    }
+    .activity-scroll { max-height: 460px; overflow-y: auto; }
 
     .activity-item {
       padding: 12px 0;
@@ -399,69 +353,16 @@
     .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
     .activity-item:first-child { padding-top: 0; }
 
-    .act-title-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+    .act-title-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .tag-ch { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--primary-light); color: var(--primary); }
+    .tag-exp { font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 6px; background: var(--rose-light); color: var(--rose); }
+    .act-name { font-size: 13px; font-weight: 600; color: var(--text-main); }
+    .act-meta { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
+    .act-profit { font-size: 13.5px; font-weight: 700; color: var(--emerald); text-align: right; white-space: nowrap; }
+    .act-loss { font-size: 13.5px; font-weight: 700; color: var(--rose); text-align: right; white-space: nowrap; }
+    .empty-state { text-align: center; color: var(--text-muted); font-size: 12.5px; padding: 28px 0; }
 
-    .tag-ch {
-      font-size: 10.5px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
-      background: var(--primary-light);
-      color: var(--primary);
-    }
-
-    .tag-exp {
-      font-size: 10.5px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
-      background: var(--rose-light);
-      color: var(--rose);
-    }
-
-    .act-name {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
-    .act-meta {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .act-profit {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--emerald);
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .act-loss {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--rose);
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .empty-state {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 12.5px;
-      padding: 28px 0;
-    }
-
-    /* =========================================
-       FORMS & ORDER BUILDER (RESPONSIVE SPLIT)
-       ========================================= */
+    /* FORMS & AUTOCOMPLETE KATALOG */
     .order-split-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -475,24 +376,9 @@
       margin: 0 auto;
     }
 
-    .form-title {
-      font-size: 16.5px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      color: var(--text-main);
-    }
-
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      color: #475569;
-      margin-bottom: 6px;
-    }
+    .form-title { font-size: 16.5px; font-weight: 700; margin-bottom: 16px; color: var(--text-main); }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 6px; }
 
     .form-control {
       width: 100%;
@@ -505,7 +391,6 @@
       color: var(--text-main);
       outline: none;
       min-height: 44px;
-      transition: border-color 0.2s, background 0.2s;
     }
 
     .form-control:focus {
@@ -529,7 +414,6 @@
       color: #475569;
       cursor: pointer;
       min-height: 40px;
-      transition: all 0.15s;
     }
 
     .ch-btn.active {
@@ -546,12 +430,70 @@
       margin-bottom: 4px;
     }
 
+    .item-builder-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
     .item-builder-title {
       font-size: 12.5px;
       font-weight: 700;
       color: var(--primary);
-      margin-bottom: 10px;
     }
+
+    .catalog-pill {
+      font-size: 10.5px;
+      font-weight: 600;
+      background: #e2e8f0;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    .catalog-pill.ready {
+      background: #ccfbf1;
+      color: #0f766e;
+    }
+
+    /* Autocomplete Dropdown */
+    .autocomplete-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .autocomplete-list {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.14);
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 50;
+    }
+
+    .ac-item {
+      padding: 10px 13px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover, .ac-item:active { background: var(--primary-light); }
+    .ac-name { font-weight: 600; color: var(--text-main); }
+    .ac-price { font-size: 11.5px; font-weight: 700; color: var(--primary); white-space: nowrap; }
 
     .row-qty-modal {
       display: grid;
@@ -608,13 +550,7 @@
     .cart-item:last-child { border-bottom: none; }
     .cart-item-info strong { display: block; color: var(--text-main); }
     .cart-item-info span { font-size: 11px; color: var(--text-muted); }
-
-    .cart-item-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-    }
+    .cart-item-right { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 
     .btn-del-item {
       background: var(--rose-light);
@@ -687,11 +623,7 @@
       box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25);
     }
 
-    .btn-submit:disabled { opacity: 0.6; }
-
-    /* =========================================
-       NAVIGATION: BOTTOM BAR (HP) -> SIDEBAR (TABLET/LAPTOP)
-       ========================================= */
+    /* NAVIGATION */
     nav {
       position: fixed;
       bottom: 0;
@@ -704,9 +636,7 @@
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
     }
 
-    .sidebar-brand {
-      display: none;
-    }
+    .sidebar-brand { display: none; }
 
     .nav-inner {
       width: 100%;
@@ -727,28 +657,14 @@
       font-weight: 500;
       color: #94a3b8;
       cursor: pointer;
-      transition: all 0.15s;
     }
 
-    .nav-btn.active {
-      color: var(--primary);
-      font-weight: 700;
-    }
+    .nav-btn.active { color: var(--primary); font-weight: 700; }
+    .nav-btn svg { width: 22px; height: 22px; }
 
-    .nav-btn svg {
-      width: 22px;
-      height: 22px;
-    }
-
-    /* =========================================
-       BREAKPOINT 1: TABLET (>= 768px)
-       ========================================= */
     @media (min-width: 768px) {
-      body {
-        padding-bottom: 24px;
-      }
+      body { padding-bottom: 24px; }
 
-      /* Transformasi Bottom Bar menjadi Sidebar Kiri */
       nav {
         top: 0;
         right: auto;
@@ -784,23 +700,10 @@
         font-size: 16px;
       }
 
-      .brand-text strong {
-        display: block;
-        font-size: 14px;
-        color: var(--text-main);
-      }
+      .brand-text strong { display: block; font-size: 14px; color: var(--text-main); }
+      .brand-text span { font-size: 11px; color: var(--text-muted); }
 
-      .brand-text span {
-        font-size: 11px;
-        color: var(--text-muted);
-      }
-
-      .nav-inner {
-        display: flex;
-        flex-direction: column;
-        height: auto;
-        gap: 6px;
-      }
+      .nav-inner { display: flex; flex-direction: column; height: auto; gap: 6px; }
 
       .nav-btn {
         flex-direction: row;
@@ -812,70 +715,31 @@
         color: #475569;
       }
 
-      .nav-btn:hover {
-        background: #f8fafc;
-        color: var(--text-main);
-      }
-
-      .nav-btn.active {
-        background: var(--primary-light);
-        color: var(--primary);
-      }
+      .nav-btn:hover { background: #f8fafc; color: var(--text-main); }
+      .nav-btn.active { background: var(--primary-light); color: var(--primary); }
 
       header, main {
         margin-left: var(--sidebar-w);
         width: calc(100% - var(--sidebar-w));
       }
 
-      .channel-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .channel-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
-    /* =========================================
-       BREAKPOINT 2: LAPTOP & DESKTOP (>= 1024px)
-       ========================================= */
     @media (min-width: 1024px) {
-      .metrics-grid {
-        grid-template-columns: 1.45fr 1fr;
-        align-items: stretch;
-      }
-
-      .sub-metrics-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .dashboard-bottom-grid {
-        grid-template-columns: 1.15fr 1fr;
-      }
-
-      .channel-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .order-split-grid {
-        grid-template-columns: 1.1fr 0.9fr;
-      }
+      .metrics-grid { grid-template-columns: 1.45fr 1fr; align-items: stretch; }
+      .sub-metrics-grid { grid-template-columns: 1fr; }
+      .dashboard-bottom-grid { grid-template-columns: 1.15fr 1fr; }
+      .channel-grid { grid-template-columns: repeat(2, 1fr); }
+      .order-split-grid { grid-template-columns: 1.1fr 0.9fr; }
     }
 
-    /* =========================================
-       BREAKPOINT 3: WIDE DESKTOP (>= 1280px)
-       ========================================= */
     @media (min-width: 1280px) {
-      .metrics-grid {
-        grid-template-columns: 1.3fr 1fr;
-      }
-
-      .sub-metrics-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .channel-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .metrics-grid { grid-template-columns: 1.3fr 1fr; }
+      .sub-metrics-grid { grid-template-columns: 1fr 1fr; }
+      .channel-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
-    /* Loader & Toast */
     .loader {
       width: 20px;
       height: 20px;
@@ -911,7 +775,7 @@
 </head>
 <body>
 
-  <!-- Navigation (Bottom Bar di HP, Sidebar Kiri di Tablet/Laptop) -->
+  <!-- Navigation -->
   <nav>
     <div class="sidebar-brand">
       <div class="brand-icon">Rp</div>
@@ -951,7 +815,7 @@
       </div>
       <div class="header-controls">
         <input type="date" id="filterDate" class="date-filter">
-        <button onclick="loadDashboard()" class="btn-refresh" title="Refresh Data">
+        <button onclick="loadDashboard(false)" class="btn-refresh" title="Refresh Data">
           <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
           </svg>
@@ -973,16 +837,12 @@
     <!-- TAB 1: DASHBOARD -->
     <section id="view-dashboard">
       <div class="dashboard-stack">
-
-        <!-- Switcher Harian / Bulanan -->
         <div class="period-switch">
           <button id="btnModeDaily" class="period-btn active" onclick="setDashboardMode('daily')">Ringkasan Harian</button>
           <button id="btnModeMonthly" class="period-btn" onclick="setDashboardMode('monthly')">Ringkasan Bulanan</button>
         </div>
 
-        <!-- Top KPI Row -->
         <div class="metrics-grid">
-          <!-- Hero Card -->
           <div class="hero-card">
             <div class="hero-top">
               <div>
@@ -1004,7 +864,6 @@
             </div>
           </div>
 
-          <!-- Omzet & Modal -->
           <div class="sub-metrics-grid">
             <div class="card stat-card">
               <div class="stat-label">Penghasilan Akhir (Omzet)</div>
@@ -1019,15 +878,12 @@
           </div>
         </div>
 
-        <!-- Bottom Grid: Channel Performance & Recent Activity -->
         <div class="dashboard-bottom-grid">
           <div class="card">
             <div class="section-header">
               <div id="channelSectionTitle" class="section-title">Profit & Omzet per Channel (Harian)</div>
             </div>
-            <div id="channelList" class="channel-grid">
-              <!-- Diisi via JS -->
-            </div>
+            <div id="channelList" class="channel-grid"></div>
           </div>
 
           <div class="card">
@@ -1040,7 +896,6 @@
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
@@ -1048,7 +903,6 @@
     <section id="view-penjualan" class="hidden">
       <div class="order-split-grid">
 
-        <!-- Kolom Kiri: Info Pesanan & Form Tambah Barang -->
         <div class="card">
           <div class="form-title">1. Detail Pesanan & Tambah Barang</div>
 
@@ -1071,11 +925,19 @@
           </div>
 
           <div class="item-builder-box">
-            <div class="item-builder-title">+ Tambah Barang dalam Pesanan Ini</div>
-            <input type="text" id="itemNama" placeholder="Nama barang (contoh: Beras 5kg)" class="form-control">
+            <div class="item-builder-header">
+              <div class="item-builder-title">+ Tambah Barang</div>
+              <span id="catalogStatusBadge" class="catalog-pill">Katalog: 0 produk</span>
+            </div>
+
+            <div class="autocomplete-wrap">
+              <input type="text" id="itemNama" placeholder="Ketik nama barang dari katalog Maryn POS..." autocomplete="off" class="form-control">
+              <div id="acDropdown" class="autocomplete-list hidden"></div>
+            </div>
+
             <div class="row-qty-modal">
               <input type="number" id="itemQty" value="1" min="1" placeholder="Qty" class="form-control">
-              <input type="number" id="itemModal" placeholder="Modal satuan (Rp)" class="form-control">
+              <input type="number" id="itemModal" placeholder="Modal satuan (otomatis / manual)" class="form-control">
             </div>
             <button type="button" onclick="tambahBarangKePesanan()" class="btn-add-item">
               + Masukkan ke Daftar Barang
@@ -1083,7 +945,6 @@
           </div>
         </div>
 
-        <!-- Kolom Kanan: Keranjang & Kalkulasi Akhir -->
         <div class="card">
           <div class="form-title">2. Daftar Barang & Hitung Profit</div>
 
@@ -1094,7 +955,7 @@
             </div>
             <div id="cartList">
               <div style="text-align:center; color:#94a3b8; font-size:12px; padding:16px 0;">
-                Belum ada barang. Tambahkan barang 1, barang 2, dst.
+                Belum ada barang. Ketik & pilih barang 1, barang 2, dst.
               </div>
             </div>
             <div class="cart-total-row">
@@ -1170,22 +1031,115 @@
     </section>
   </main>
 
-  <!-- Toast -->
   <div id="toast" class="toast">Tersimpan!</div>
 
   <script>
     // GANTI DENGAN URL WEB APP APPS SCRIPT ANDA
     const API_URL = 'https://script.google.com/macros/s/AKfycbzAdUxNAE9-YHHNQXycV4R95jtFnVtk1BYxqSeD7fnmF7xQX_HLHz4UBunfrscxMdF1/exec';
-
     const QUEUE_KEY = 'keuangan_toko_sync_queue';
+    const CATALOG_KEY = 'keuangan_toko_maryn_catalog';
 
     let dashboardData = null;
     let currentMode = 'daily';
     let orderItems = [];
     let isSyncing = false;
+    let masterCatalog = [];
 
     // ==========================================
-    // STORAGE & ANTREAN TAK TERLIHAT (BACKGROUND QUEUE)
+    // CACHE KATALOG PRODUK MARYN POS
+    // ==========================================
+    function loadCatalogFromCache() {
+      try {
+        const cached = localStorage.getItem(CATALOG_KEY);
+        if (cached) {
+          masterCatalog = JSON.parse(cached) || [];
+          updateCatalogBadge();
+        }
+      } catch (e) {}
+    }
+
+    function saveCatalogToCache(list) {
+      if (!Array.isArray(list)) return;
+      masterCatalog = list;
+      updateCatalogBadge();
+      try {
+        localStorage.setItem(CATALOG_KEY, JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    function updateCatalogBadge() {
+      const badge = document.getElementById('catalogStatusBadge');
+      if (!badge) return;
+      if (masterCatalog.length > 0) {
+        badge.textContent = `Maryn POS: ${masterCatalog.length} produk`;
+        badge.classList.add('ready');
+      } else {
+        badge.textContent = 'Katalog: 0 produk';
+        badge.classList.remove('ready');
+      }
+    }
+
+    // Pencarian & Auto-Fill Modal Satuan
+    const inputNamaEl = document.getElementById('itemNama');
+    const dropdownEl = document.getElementById('acDropdown');
+
+    inputNamaEl.addEventListener('input', () => {
+      const query = inputNamaEl.value.trim().toLowerCase();
+      if (!query || masterCatalog.length === 0) {
+        dropdownEl.classList.add('hidden');
+        return;
+      }
+
+      // Cek kecocokan persis agar modal langsung terisi meski tidak klik dropdown
+      const exact = masterCatalog.find(p => p.n.toLowerCase() === query);
+      if (exact) {
+        document.getElementById('itemModal').value = exact.m;
+      }
+
+      // Filter multi-kata (misal ketik "beras 5" cocok dengan "Beras Ramos 5kg")
+      const keywords = query.split(/\s+/);
+      const matches = masterCatalog
+        .filter(p => {
+          const nameLower = p.n.toLowerCase();
+          return keywords.every(kw => nameLower.includes(kw));
+        })
+        .slice(0, 20);
+
+      if (matches.length === 0) {
+        dropdownEl.classList.add('hidden');
+        return;
+      }
+
+      dropdownEl.innerHTML = '';
+      matches.forEach(prod => {
+        const div = document.createElement('div');
+        div.className = 'ac-item';
+        div.innerHTML = `
+          <span class="ac-name">${prod.n}</span>
+          <span class="ac-price">Modal: ${formatRp(prod.m)}</span>
+        `;
+        div.addEventListener('click', () => {
+          inputNamaEl.value = prod.n;
+          document.getElementById('itemModal').value = prod.m;
+          dropdownEl.classList.add('hidden');
+          document.getElementById('itemQty').focus();
+          document.getElementById('itemQty').select();
+        });
+        dropdownEl.appendChild(div);
+      });
+
+      dropdownEl.classList.remove('hidden');
+    });
+
+    // Tutup dropdown jika klik di luar kolom nama barang
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.autocomplete-wrap')) {
+        dropdownEl.classList.add('hidden');
+      }
+    });
+
+    // ==========================================
+    // ANTREAN SIMPAN TANPA LOADING (BACKGROUND QUEUE)
     // ==========================================
     let memoryQueue = [];
 
@@ -1206,7 +1160,6 @@
       updateSyncBadge();
     }
 
-    // Indikator kecil & halus di pojok kanan bawah (hanya muncul saat ada antrean)
     function updateSyncBadge() {
       let badge = document.getElementById('syncStatusPill');
       if (!badge) {
@@ -1236,9 +1189,7 @@
     }
 
     async function processSyncQueue() {
-      if (isSyncing) return;
-      if (API_URL.includes('URL_WEB_APP')) return;
-
+      if (isSyncing || API_URL.includes('URL_WEB_APP')) return;
       const queue = getSyncQueue();
       if (queue.length === 0) return;
 
@@ -1257,12 +1208,10 @@
             body: JSON.stringify(currentItem.payload)
           });
 
-          // Hapus item pertama setelah berhasil dikirim
           const updated = getSyncQueue();
           updated.shift();
           saveSyncQueue(updated);
         } catch (err) {
-          // Jika offline/gagal, hentikan loop sementara dan coba lagi 4 detik kemudian
           isSyncing = false;
           setTimeout(processSyncQueue, 4000);
           return;
@@ -1271,14 +1220,13 @@
 
       isSyncing = false;
       updateSyncBadge();
-      // Refresh data dashboard diam-diam setelah seluruh antrean masuk ke Sheets
       loadDashboard(true);
     }
 
     window.addEventListener('online', processSyncQueue);
 
     // ==========================================
-    // INISIALISASI TANGGAL & HELPER
+    // TANGGAL, NAVIGASI & KERANJANG PESANAN
     // ==========================================
     const getTodayWIB = () => {
       const now = new Date();
@@ -1310,7 +1258,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Pilih Channel
     document.querySelectorAll('.ch-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.ch-btn').forEach(b => b.classList.remove('active'));
@@ -1319,9 +1266,6 @@
       });
     });
 
-    // ==========================================
-    // LOGIKA KERANJANG BARANG PER PESANAN
-    // ==========================================
     function tambahBarangKePesanan() {
       const namaEl = document.getElementById('itemNama');
       const qtyEl = document.getElementById('itemQty');
@@ -1352,6 +1296,7 @@
       namaEl.value = '';
       qtyEl.value = '1';
       modalEl.value = '';
+      dropdownEl.classList.add('hidden');
       namaEl.focus();
 
       renderOrderCart();
@@ -1374,7 +1319,7 @@
       if (orderItems.length === 0) {
         listEl.innerHTML = `
           <div style="text-align:center; color:#94a3b8; font-size:12px; padding:16px 0;">
-            Belum ada barang. Tambahkan barang 1, barang 2, dst.
+            Belum ada barang. Ketik & pilih barang 1, barang 2, dst.
           </div>
         `;
         totalModalEl.textContent = 'Rp 0';
@@ -1424,7 +1369,6 @@
       }
     }
 
-    // SIMPAN PENJUALAN INSTAN (TANPA TUNGGU LOADING)
     function simpanPesanan() {
       if (API_URL.includes('URL_WEB_APP')) {
         showToast('Masukkan URL Apps Script terlebih dahulu!');
@@ -1457,7 +1401,6 @@
         penghasilanAkhir: Number(penghasilanVal)
       };
 
-      // Masukkan ke antrean latar belakang & langsung reset UI
       enqueueData(payload);
 
       orderItems = [];
@@ -1529,6 +1472,9 @@
 
         if (data.status === 'success') {
           dashboardData = data;
+          if (data.products) {
+            saveCatalogToCache(data.products);
+          }
           renderDashboardSummary();
 
           const actList = document.getElementById('activityList');
@@ -1581,7 +1527,6 @@
 
     document.getElementById('filterDate').addEventListener('change', () => loadDashboard(false));
 
-    // SIMPAN PENGELUARAN INSTAN (TANPA TUNGGU LOADING)
     document.getElementById('formPengeluaran').addEventListener('submit', (e) => {
       e.preventDefault();
       if (API_URL.includes('URL_WEB_APP')) {
@@ -1606,7 +1551,6 @@
       showToast('Tersimpan! Silakan input pengeluaran berikutnya.');
     });
 
-    // Service Worker & PWA Install Prompt
     if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
       navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
@@ -1628,10 +1572,10 @@
       deferredPrompt = null;
     });
 
-    // Jalankan antrean tertunda (jika ada) & muat dashboard saat aplikasi dibuka
+    // Muat cache katalog seketika, jalankan antrean tertunda, & sinkronkan data terbaru
+    loadCatalogFromCache();
     processSyncQueue();
     loadDashboard();
   </script>
-
 </body>
 </html>
